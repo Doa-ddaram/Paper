@@ -49,14 +49,14 @@ $x_h$ : input signal, $~w_h$ : $x_h$를 통해 연관된 synaptic 가중치를 수식적으로 
   
 $$\begin{align}f(y) = max(0,~y),~y = \sum_{h} x_{h}w_{h}\end{align}$$   
 
-$$\begin{align}\frac{\partial f}{\partial y} = \begin{cases} 1, & y > 0  \\ 0, & y \le 0 \end{cases}\end{align}$$
+$$\begin{align}\frac{\partial f}{\partial y} = \left\{\begin{align*} &1,~y > 0  \\ &0,~y \le 0 \end{align*} \right. \end{align}$$
 
 이론적으로 IF neuron은 ReLU neuron을 근사할 수 있음. 특히, IF 뉴런의 membrane potential은 ReLU neuron의 활성화 값으로 근사 가능.
 
 이것을 증명하기 위해서 LIF가 아닌 IF 뉴런은 $U(t)$라는 membrane potential이 임계값인 $\theta$ 를 넘기면 spike train에 흔적이 남고 fire하게 된다.  
 
-$$\begin{align} &U(t) = U (t- \Delta t)~+~\sum_{h}w_{h}(t)s_{h}(t) \tag{3a}\\   
-&if,~U(t)~\ge~\theta,~then,~r(t)~=~1,~U(t)~=~U_{rest} \tag{3b}  \end{align}$$  
+$$\begin{align} & \begin{equation*} U(t) = U (t- \Delta t)~+~\sum_{h}w_{h}(t)s_{h}(t) \end{equation*} \tag{3a} \\&
+\begin{equation*}if~U(t)~{\ge}~{\theta}~then,~r(t)~=~1,~U(t)~=~U_{rest}\end{equation*} \tag{3b}  \end{align}$$  
 
 여기서 $s_h(t)$와 $r_h(t)$는 $t$ 시간에 대해 시냅스적으로 pre와 post neuron의 spike를 각각 의미한다. 따라서 $s_{h}(t),r_{h}(t) \in \{0,~1\}$ 이다.
 추가적으로 아래 첨자로 표시되는 h는 h번째 시냅스? 뉴런?을 의미함.  
@@ -157,11 +157,11 @@ Figure 1은 SNN의 activation function과 그것의 도함수가 나옴.
 
  위 일반적인 공식에서 GD와 학습률 $H$개의 입력을 받으면서 single training sample을 통한 선형 출력 neuron $i$의 경우, 가중치 변화 공식은 다음과 같다.
 
-$$\begin{align}E={(d_{i}-o_{i})}^2={(d_{i}-\sum_{h}o_{h}w_{ih})}^2\rarr\frac{\partial E}{\partial w_{ih}}=-2(d_{i}-o_{i})\cdot o_{h}\end{align}$$
+$$\begin{align}E={(d_{i}-o_{i})}^2={(d_{i}-\sum_{h}o_{h}w_{ih})}^2\rightarrow\frac{\partial E}{\partial w_{ih}}=-2(d_{i}-o_{i})\cdot o_{h}\end{align}$$
 
  이를 통해 $E~=~{(d_{i}-o_{i})}^2$라는 식을 가중치 update 수행할 수 있다.
 
-$$\begin{align}\Delta w_{ih}~\propto~-\frac{\partial E}{\partial w_{ih}}~\rarr~{\Delta}w_{ih}={\mu}(d_{i}-o_{i})o_{h} \end{align}$$
+$$\begin{align}\Delta w_{ih}~\propto~-\frac{\partial E}{\partial w_{ih}}~\rightarrow~{\Delta}w_{ih}={\mu}(d_{i}-o_{i})o_{h} \end{align}$$
 
 여기서 이 식의 $d_{i}$, $o_{i}$, $o_{h}$은 ANN에서의 뉴런들의 Index이다. 이것을 spike train의 spike 수인 $L_{i}$, $G_{i}$, $G_{h}$로
 각각 바꿀 수 있다. 
