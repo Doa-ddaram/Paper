@@ -125,10 +125,17 @@ $U^{tot} = \hat{y} = \sum_{t^{f}\in {r(t)=1}}U(t^{f}) \qquad (7) $
 
 $f(\hat{y}) = \begin{cases} R = \gamma \hat{y} & \hat{y} > \theta \\ 0 & otherwise \end{cases} \qquad (8) $
 
-따라서 식 (8)과 같이 $U^{tot}$은 $R$과 비례 관계에 놓여있고, 여기서 $\gamma$는 비례 상수 역할로써, 관측한 시간이 클수록, 
-spike 횟수가 늘어나기 될테니, 
+따라서 식 (8)과 같이 $U^{tot}$은 $R$과 비례 관계에 놓여있고, 여기서 $\gamma$는 비례 상수 역할로써, $T$에 비례하고 threthold인 $\theta$와
+반비례 한다. 따라서 $\gamma \propto T \cdot \theta ^{-1} $ 라는 식이 만족된다.
 
-위 증명들을 통해, ReLU에 적용된 방식을 새로운 스파이크 기반 learning rule에 적용하여 개발할 수 있게 됨.   
+여기서 선형관계로 표현된 activation function은 기존 ReLU function에서 $x$ 가 양수 방향으로 $\theta$만큼 이동하고,
+기울기가 기존 ReLU의 $\gamma$ 배 라는 것으로 유사하다는 것을 입증할 수 있음.
+
+Figure 1은 SNN의 activation function과 그것의 도함수가 나옴.
+
+위 증명들을 통해, SNN의 activation function이 ReLU activation function과 유사하다는 것 점을 알 수 있고, 
+
+이를 통해 ReLU에 적용된 방식을 새로운 스파이크 기반 learning rule에 적용하여 개발할 수 있게 됨.   
 
 다음 section에서는 이를 통해 IF 뉴런에 적용되는 STDP-base backpropagation rule을 제안.  
 ## 2.2 Backpropagation using STDP
