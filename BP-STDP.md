@@ -47,23 +47,23 @@ f(y) : neuron with ReLU activation function
   
 $x_h$ : input signal, $~w_h$ : $x_h$를 통해 연관된 synaptic 가중치를 수식적으로 나타내면,  
   
-$f(y) = max(0,~y),~y = \sum_{h} x_hw_h \qquad (1) $   
+$$f(y) = max(0,~y),~y = \sum_{h} x_hw_h \qquad (1) $$   
 
-$\frac{\partial f}{\partial y} = \begin{cases} 1, & y > 0  \\ 0, & y \le 0 \end{cases} \qquad (2)$
+$$\frac{\partial f}{\partial y} = \begin{cases} 1, & y > 0  \\ 0, & y \le 0 \end{cases} \qquad (2)$$
 
 이론적으로 IF neuron은 ReLU neuron을 근사할 수 있음. 특히, IF 뉴런의 membrane potential은 ReLU neuron의 활성화 값으로 근사 가능.
 
 이것을 증명하기 위해서 LIF가 아닌 IF 뉴런은 $U(t)$라는 membrane potential이 임계값인 $\theta$ 를 넘기면 spike train에 흔적이 남고 fire하게 된다.  
 
-$ U(t) = U (t- \Delta t)~+~\sum_{h}w_{h}(t)s_{h}(t) \qquad (3a)$  
-$ if~U(t)~\ge~\theta~$ then $ r(t)~=~1,~U(t)~=~U_{rest} \qquad (3b)$  
+$$ U(t) = U (t- \Delta t)~+~\sum_{h}w_{h}(t)s_{h}(t) \qquad (3a)$$  
+$$if~U(t)~\ge~\theta~$ then $ r(t)~=~1,~U(t)~=~U_{rest} \qquad (3b)$$  
 
-여기서 $s_h(t)$와 $r_h(t)$는 $t$ 시간에 대해 시냅스적으로 pre와 post neuron의 spike를 각각 의미한다. 따라서 $s_{h}(t),r_{h}(t) \in \{0,~1\} $ 이다.
+여기서 $s_h(t)$와 $r_h(t)$는 $t$ 시간에 대해 시냅스적으로 pre와 post neuron의 spike를 각각 의미한다. 따라서 $s_{h}(t),r_{h}(t) \in \{0,~1\}$ 이다.
 추가적으로 아래 첨자로 표시되는 h는 h번째 시냅스? 뉴런?을 의미함.  
 
 neuron의 membrane potential은 fire할 때, 휴지(resting) potential인 $U_{rest}$으로 재설정됨. 이 때, $U_{rest}$은 0으로 생각함.  
 
-$G_{h}(t)은 시냅스에서 pre-neuron의 spike train을 의미하며, 여기서 사용되는 spike train은 앞으로도 계속 사용되는 개념으로
+$G_{h}(t)$은 시냅스에서 pre-neuron의 spike train을 의미하며, 여기서 사용되는 spike train은 앞으로도 계속 사용되는 개념으로
 
 스파이크 되는 지점의 시점인 $t_{h}^p$의 정보를 갖고 있다고 보면 된다. 그리고 여기서 사용되는 $G_{h}(t)$는 디랙-델타 함수의 합으로 표현되는데,
 그 이유는 적분을 할 때, $\delta(t-t_{h}^{p})$를 유의미한 값을 가지기 위해서다.  
@@ -72,7 +72,7 @@ $G_{h}(t)은 시냅스에서 pre-neuron의 spike train을 의미하며, 여기서 사용되는 spik
 
 $\delta(t-t_{h}^{p})$가 0이 된다. 이를 통해 스파이크 되는 지점을 잡아서, 스파이크 되는 시점을 모아 놓은 함수를 얻을 수 있다. 그 내용이 식 (4)이다.  
 
-$G_h(t)~=~\sum_{t_{h}^{p}\in {s_{h}(t)=1}} \delta (t-t_{h}^{p}) \qquad (4)$  
+$G_h(t)~=~\sum_{t_{h}^{p}\in {s_{h}(t)=1}}\delta (t-t_{h}^{p})\qquad (4)$  
 
 여기서 $G_h(t)$는 spike train이다. 식을 분석하자면, $s_{h}(t) = 1$는 위에서 말한 대로 pre-neuron의 스파이크를 의미하며 $t$ 시점의 $h$번째 뉴런이
 스파이크되었다는 것을 의미한다. 따라서 $t_{h}^{p}$은 pre-neuron의 스파이크 되는 시점을 뜻하고, 위에서 말한 디랙-델타 함수를 통해,
@@ -81,7 +81,7 @@ $G_h(t)$는 preneuron 스파이크가 되는 시점을 알 수 있다. 예시를 통해서 더욱 이해�
 예를 들어, h번째 뉴런이 관측한 10ms에서 3ms와 6ms 지점에서 preneuron이 스파이크 되었다고 가정을 하면, $G_h(t)$는 $t=3ms, 6ms$일 때를 제외하고는
 $G_h(t)$의 값은 0이다. 그렇다면 $G_h(3)$의 값은 어떻게 되는가? 정확히는 값을 따질 수 없으므로 0이 아니다라고 생각하고 넘기면 된다.
     
-$x_{h}~=~{1\over K}\int_{0}^{T} G_{h}(t^{'})\, dt^{'} \qquad (5) $  
+$x_{h}~=~{1\over K}\int_{0}^{T} G_{h}(t^{'})\, dt^{'}\qquad (5)$  
 
 여기서 $x_{h}$는 스파이크 횟수를 나타낸다. 다만, $K$를 통해 정규화를 진행한 것을 의미하며, 디랙-델타함수의 합으로 표현된 $G_{h}(t)$를 정확하게
 계산하기 위해서는 적분을 해야 한다.   
@@ -123,12 +123,12 @@ $U^{tot} = \hat{y} = \sum_{t^{f}\in {r(t)=1}}U(t^{f}) \qquad (7) $
 
 따라서 $U^{tot}$은 postsynaptic-neuron spike 횟수인 $R$과 연관이 있음을 알 수 있다.
 
-$f(\hat{y}) = \begin{cases} R = \gamma \hat{y} & \hat{y} > \theta \\ 0 & otherwise \end{cases} \qquad (8) $
+$$f(\hat{y}) = \begin{cases} R = \gamma \hat{y} & \hat{y} > \theta \\ 0 & otherwise \end{cases} \qquad (8)$$
 
 따라서 식 (8)과 같이 $U^{tot}$은 $R$과 비례 관계에 놓여있고, 여기서 $\gamma$는 비례 상수 역할로써, $T$에 비례하고 threthold인 $\theta$와
-반비례 한다. 따라서 $\gamma \propto T \cdot \theta ^{-1} $ 라는 식이 만족된다.
+반비례 한다. 따라서 $\gamma \propto T \cdot \theta ^{-1}$ 라는 식이 만족된다.
 
-여기서 선형관계로 표현된 activation function은 기존 ReLU function에서 $x$ 가 양수 방향으로 $\theta$만큼 이동하고,
+여기서 선형관계로 표현된 activation function은 기존 ReLU function에서 $x$가 양수 방향으로 $\theta$만큼 이동하고,
 기울기가 기존 ReLU의 $\gamma$ 배 라는 것으로 유사하다는 것을 입증할 수 있음.
 
 Figure 1은 SNN의 activation function과 그것의 도함수가 나옴.
@@ -146,7 +146,7 @@ Figure 1은 SNN의 activation function과 그것의 도함수가 나옴.
  이 두 네트워크의 주요 차이점은 데이터 통신 방식에 있음. 전통적인 신경망(left)은 실수를 입력 및 출력으로 처리하며, 
  SNN은 $ T$ ms 시간 간격 내에서 spike train을 입력 및 출력으로 처리.  
  
- GD를 사용하는 ANN은 목표값 $ d $ 와 출력값 $o$ 간의 차이 제곱를 최소화하는 문제로 해결.  
+ GD를 사용하는 ANN은 목표값 $d$ 와 출력값 $o$ 간의 차이 제곱를 최소화하는 문제로 해결.  
  
  $M$개의 output neuron이 $N$개의 training sample을 받을 때, 일반적인 loss function은 다음과 같음.  
  
