@@ -47,16 +47,16 @@ f(y) : neuron with ReLU activation function
   
 $x_h$ : input signal, $~w_h$ : $x_h$를 통해 연관된 synaptic 가중치를 수식적으로 나타내면,  
   
-$$f(y) = max(0,~y),~y = \sum_{h} x_hw_h \qquad (1) $$   
+$$\begin{align}f(y) = max(0,~y),~y = \sum_{h} x_{h}w_{h}\end{align}$$   
 
-$$\frac{\partial f}{\partial y} = \begin{cases} 1, & y > 0  \\ 0, & y \le 0 \end{cases} \qquad (2)$$
+$$\begin{align}\frac{\partial f}{\partial y} = \begin{cases} 1, & y > 0  \\ 0, & y \le 0 \end{cases}\end{align}$$
 
 이론적으로 IF neuron은 ReLU neuron을 근사할 수 있음. 특히, IF 뉴런의 membrane potential은 ReLU neuron의 활성화 값으로 근사 가능.
 
 이것을 증명하기 위해서 LIF가 아닌 IF 뉴런은 $U(t)$라는 membrane potential이 임계값인 $\theta$ 를 넘기면 spike train에 흔적이 남고 fire하게 된다.  
 
-$$ U(t) = U (t- \Delta t)~+~\sum_{h}w_{h}(t)s_{h}(t) \qquad (3a)$$  
-$$if~U(t)~\ge~\theta~$ then $ r(t)~=~1,~U(t)~=~U_{rest} \qquad (3b)$$  
+$$\begin{align} &U(t) = U (t- \Delta t)~+~\sum_{h}w_{h}(t)s_{h}(t) \tag{3a}\\   
+&if,~U(t)~\ge~\theta,~then,~r(t)~=~1,~U(t)~=~U_{rest} \tag{3b}  \end{align}$$  
 
 여기서 $s_h(t)$와 $r_h(t)$는 $t$ 시간에 대해 시냅스적으로 pre와 post neuron의 spike를 각각 의미한다. 따라서 $s_{h}(t),r_{h}(t) \in \{0,~1\}$ 이다.
 추가적으로 아래 첨자로 표시되는 h는 h번째 시냅스? 뉴런?을 의미함.  
@@ -70,18 +70,21 @@ $G_{h}(t)$은 시냅스에서 pre-neuron의 spike train을 의미하며, 여기서 사용되는 spi
 
 디랙-델타 함수는 $\delta$의 함수 꼴로 표현되는데, $\int_{-\infty}^{\infty} \delta(t)\,dt = 1 $,여기서 $t$가 $t_{h}^{p}$와 일치하지 않는다면,
 
-$\delta(t-t_{h}^{p})$가 0이 된다. 이를 통해 스파이크 되는 지점을 잡아서, 스파이크 되는 시점을 모아 놓은 함수를 얻을 수 있다. 그 내용이 식 (4)이다.  
+$\delta(t-t_{h}^{p})$가 0이 된다. 이를 통해 스파이크 되는 지점을 잡아서, 스파이크 되는 시점을 모아 놓은 함수를 얻을 수 있다. 그 내용이 식 (4)이다.
 
-$G_h(t)~=~\sum_{t_{h}^{p}\in {s_{h}(t)=1}}\delta (t-t_{h}^{p})\qquad (4)$  
+$$\begin{align} \\ G_h(t)~=~\sum_{t_{h}^{p}\in{s_{h}(t)=1}}\delta (t-t_{h}^{p}) \end{align}$$  
 
-여기서 $G_h(t)$는 spike train이다. 식을 분석하자면, $s_{h}(t) = 1$는 위에서 말한 대로 pre-neuron의 스파이크를 의미하며 $t$ 시점의 $h$번째 뉴런이
-스파이크되었다는 것을 의미한다. 따라서 $t_{h}^{p}$은 pre-neuron의 스파이크 되는 시점을 뜻하고, 위에서 말한 디랙-델타 함수를 통해,
-$G_h(t)$는 preneuron 스파이크가 되는 시점을 알 수 있다. 예시를 통해서 더욱 이해에 되움을 주겠다.  
+여기서 $G_h(t)$는 spike train이다. 식을 분석하자면, $s_{h}(t) = 1$는 위에서 말한 대로 pre-neuron의 스파이크를 의미하며 $t$ 시점의 $h$번째 뉴런이 스파이크되었다는 것을 의미한다. 
+
+따라서 $t_{h}^{p}$은 pre-neuron의 스파이크 되는 시점을 뜻하고, 위에서 말한 디랙-델타 함수를 통해,
+$G_h(t)$는 preneuron 스파이크가 되는 시점을 알 수 있다.
+
+더욱 이해가 되기 위해 예시를 들어볼 수 있다.  
 
 예를 들어, h번째 뉴런이 관측한 10ms에서 3ms와 6ms 지점에서 preneuron이 스파이크 되었다고 가정을 하면, $G_h(t)$는 $t=3ms, 6ms$일 때를 제외하고는
 $G_h(t)$의 값은 0이다. 그렇다면 $G_h(3)$의 값은 어떻게 되는가? 정확히는 값을 따질 수 없으므로 0이 아니다라고 생각하고 넘기면 된다.
     
-$x_{h}~=~{1\over K}\int_{0}^{T} G_{h}(t^{'})\, dt^{'}\qquad (5)$  
+$$\begin{align}x_{h}~=~{1\over K}\int_{0}^{T} G_{h}(t^{\prime})\, dt^{\prime}\end{align}$$  
 
 여기서 $x_{h}$는 스파이크 횟수를 나타낸다. 다만, $K$를 통해 정규화를 진행한 것을 의미하며, 디랙-델타함수의 합으로 표현된 $G_{h}(t)$를 정확하게
 계산하기 위해서는 적분을 해야 한다.   
@@ -94,7 +97,7 @@ $x_{h}~=~{1\over K}\int_{0}^{T} G_{h}(t^{'})\, dt^{'}\qquad (5)$
 
 따라서 그 시간을 고려하여 나온 최대 스파이크 수이다.
 
-$U(t) = \sum_{h}w_{h}(\int_{t-\alpha^{+}}^{t}\sum_{t_{h}^{p}}\delta(t^{'}-t_{h}^{p})\, dt^{'}) \qquad (6) $  
+$$\begin{align}U(t) = \sum_{h}w_{h}(\int_{t-\alpha^{+}}^{t}\sum_{t_{h}^{p}}\delta(t^{\prime}-t_{h}^{p})\, dt^{\prime})\end{align}$$  
 
 식 (6)에서는 post-neuron의 membrane potential을 계산한 것이다. 
 
@@ -109,7 +112,7 @@ post-neuron의 membrane potential이 올라간다.
 최종 계산에서 potential은 위에 나오는 것과 같이 계산이 되며, 단순하게 정의한 식 (3a) 버전을
 post-neuron에 대해서도 적용시킨 것으로 $w_{h}$는 각 가중치로 뉴런마다 특정 가중치를 곱하여 potential을 결정한다.
 
-$U^{tot} = \hat{y} = \sum_{t^{f}\in {r(t)=1}}U(t^{f}) \qquad (7) $
+$$\begin{align}U^{tot} = \hat{y} = \sum_{t^{f}\in {r(t)=1}}U(t^{f})\end{align}$$
 
 식 (7)은 post-neuron이 스파이크 되는 시점에서의 전위를 계산한 값이다. 
 
@@ -123,7 +126,7 @@ $U^{tot} = \hat{y} = \sum_{t^{f}\in {r(t)=1}}U(t^{f}) \qquad (7) $
 
 따라서 $U^{tot}$은 postsynaptic-neuron spike 횟수인 $R$과 연관이 있음을 알 수 있다.
 
-$$f(\hat{y}) = \begin{cases} R = \gamma \hat{y} & \hat{y} > \theta \\ 0 & otherwise \end{cases} \qquad (8)$$
+$$\begin{align}f(\hat{y}) = \begin{cases} R = \gamma \hat{y} & \hat{y} > \theta \\ 0 & otherwise \end{cases}\end{align}$$
 
 따라서 식 (8)과 같이 $U^{tot}$은 $R$과 비례 관계에 놓여있고, 여기서 $\gamma$는 비례 상수 역할로써, $T$에 비례하고 threthold인 $\theta$와
 반비례 한다. 따라서 $\gamma \propto T \cdot \theta ^{-1}$ 라는 식이 만족된다.
@@ -144,10 +147,57 @@ Figure 1은 SNN의 activation function과 그것의 도함수가 나옴.
  Figure 2에서 전통적인 신경망과 SNN의 네트워크 구조와 파라미터를 볼 수 있음.  
 
  이 두 네트워크의 주요 차이점은 데이터 통신 방식에 있음. 전통적인 신경망(left)은 실수를 입력 및 출력으로 처리하며, 
- SNN은 $ T$ ms 시간 간격 내에서 spike train을 입력 및 출력으로 처리.  
+ SNN은 $T$ ms 시간 간격 내에서 spike train을 입력 및 출력으로 처리.  
  
  GD를 사용하는 ANN은 목표값 $d$ 와 출력값 $o$ 간의 차이 제곱를 최소화하는 문제로 해결.  
  
  $M$개의 output neuron이 $N$개의 training sample을 받을 때, 일반적인 loss function은 다음과 같음.  
  
- $E = {1\over N} \sum_{k=1}^N$
+ $$\begin{align}E = {1\over N} \sum_{k=1}^{N}\sum_{i=1}^{M}{(d_{k,i}-o_{k,i})}^2\end{align}$$
+
+ 위 일반적인 공식에서 GD와 학습률 $H$개의 입력을 받으면서 single training sample을 통한 선형 출력 neuron $i$의 경우, 가중치 변화 공식은 다음과 같다.
+
+$$\begin{align}E={(d_{i}-o_{i})}^2={(d_{i}-\sum_{h}o_{h}w_{ih})}^2\rarr\frac{\partial E}{\partial w_{ih}}=-2(d_{i}-o_{i})\cdot o_{h}\end{align}$$
+
+ 이를 통해 $E~=~{(d_{i}-o_{i})}^2$라는 식을 가중치 update 수행할 수 있다.
+
+$$\begin{align}\Delta w_{ih}~\propto~-\frac{\partial E}{\partial w_{ih}}~\rarr~{\Delta}w_{ih}={\mu}(d_{i}-o_{i})o_{h} \end{align}$$
+
+여기서 이 식의 $d_{i}$, $o_{i}$, $o_{h}$은 ANN에서의 뉴런들의 Index이다. 이것을 spike train의 spike 수인 $L_{i}$, $G_{i}$, $G_{h}$로
+각각 바꿀 수 있다. 
+
+이것은 [35]에서 따온 것이다. 
+
+그럴 경우 위에서 정의한 가중치 변화 공식은 SNN에서 synaptic weight update를 계산하도록
+재구성할 수 있다.
+
+이 가정은 Spiking IF neuron을 ReLU 뉴런으로 근사하는 Theorem 1에 따라 유효하다.
+
+즉, 다시 말해 위에서 2.1에서 쓰인 증명을 통해 ANN의 weight change 공식을 SNN의 synaptic weight update 공식으로 근사할 수 있음.
+
+SNN에서 weight update rule은 다음과 같음.
+
+Post-synaptic neuron Spike Train : $$\begin{align} G_{i}(t) = \sum_{t_{i}^{p}{\in}\{r_{i}(t)=1\}}\delta(t-t_{i}^{p}) \tag{12a} \end{align}$$
+
+Desired neuron Spike Train : $$\begin{align} L_{i}(t) = \sum_{t_{i}^{q}{\in}\{z_{i}(t)=1\}}\delta(t-t_{i}^{q}) \tag{12b} \end{align}$$
+
+$$\begin{align}\\
+{\Delta}w_{ih} = {\mu}\int_{0}^{T}(L_{i}(t^{\prime})\,dt^{\prime}{\cdot}\int_{0}^{T}G_{h}(t^{\prime})\,dt^{\prime}
+\end{align}
+$$
+
+$$\begin{align}{\Delta}w_{ih}(t)~{\propto}~{\mu}(z_{i}(t)-r_{i}(t))s_{h}(t)\end{align}$$
+
+$$\begin{align}{\Delta}w_{ih}(t) = {\mu}~{\cdot}~{\xi}_{i}(t) \sum_{t^{\prime}=t-{\epsilon}}^{t}s_{h}(t^{\prime})\end{align}$$
+
+$$\begin{align}{\xi_{i}(t)=\begin{cases} 1, & z_{i}(t) = 1,~r_{i} \ne 1~in~[t-{\epsilon},t] \\ -1, & z_{i}(t) = 1,~r_{i} = 1~in~[t-{\epsilon},t] \\ 0, & otherwise \end{cases}}\end{align}$$
+
+$$\begin{align}w_{ih}(t) = w_{ih}(t) + {\Delta}w_{ih}(t)\end{align}$$
+
+$$\begin{align}{\Delta}w_{hj} = \mu~\cdot~(\sum_{i} \hat{\xi}_{i}w_{ih})~\cdot~o_{j}~\cdot~[o_{h} > 0] \end{align}$$
+
+$$\begin{align}{\Delta}w_{hj} = \mu \int_{0}^{T}(\sum_{i}\xi_{i}(t^{\prime})w_{ih}(t^{\prime}))\, dt^{\prime} \cdot \int_{0}^{T}(\sum_{t_{j}^{p}}\delta(t^{\prime}-t_{j}^{p}))\, dt^{\prime} \cdot ([\int_{0}^{T}\sum_{t_{h}^{p}}\delta(t^{\prime}-t_{h}^{p})\, dt^{\prime}] > 0)\end{align}$$
+
+$$\begin{align}{\Delta}w_{hj}(t) = \begin{cases} {\mu} \cdot \sum_{i}\xi_{i}(t)w_{ih}(t) \cdot \sum_{t^{\prime}=t-{\epsilon}}^{t}s_{j}(t^{\prime}), & s_{h} = 1~in~[t-{\epsilon},t] \\ 0, & otherwise \end{cases}\end{align}$$
+
+$$\begin{align}w_{hj}(t) = w_{hj}(t) + {\Delta}w_{hj}(t) \end{align}$$
